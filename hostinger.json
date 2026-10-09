@@ -1,0 +1,15 @@
+{
+  "comment": "hPanel Node.js app. After this is saved once, every push to main rebuilds and restarts the live site.",
+  "nodeVersion": "22",
+  "rootDirectory": ".",
+  "entryFile": "backend/server.js",
+  "buildCommand": "npm run build",
+  "startCommand": "npm start",
+  "outputDirectory": "backend/public",
+  "environment": [
+    "NODE_ENV=production",
+    "HOST=0.0.0.0",
+    "MONGODB_URI",
+    "FRONTEND_ORIGIN"
+  ]
+}

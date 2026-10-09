@@ -1,0 +1,17 @@
+{
+  "name": "interior-lord",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Interior Lord — Node.js app for Hostinger (API + built frontend in backend/public)",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "start": "node backend/server.js",
+    "build": "npm --prefix backend install --omit=dev && npm --prefix frontend install --include=dev && npm --prefix frontend run build",
+    "dev": "concurrently -n api,web -c blue,green \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
