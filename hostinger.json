@@ -1,8 +1,8 @@
 {
-  "comment": "hPanel Express app. Leave Output directory blank. Entry file backend/server.js. Do not set PORT to 5000; Hostinger uses 3000.",
+  "comment": "Framework preset Express. Entry file server.js. Leave Output directory blank. Delete PORT so Hostinger can assign it.",
   "nodeVersion": "22",
   "rootDirectory": ".",
-  "entryFile": "backend/server.js",
+  "entryFile": "server.js",
   "buildCommand": "npm run build",
   "startCommand": "npm start",
   "outputDirectory": "",

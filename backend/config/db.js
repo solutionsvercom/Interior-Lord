@@ -26,13 +26,17 @@ function usePublicDns() {
 }
 
 function publicLookup(hostname, options, callback) {
+  if (typeof options === 'function') {
+    callback = options;
+  }
+  const done = typeof callback === 'function' ? callback : () => {};
   usePublicDns();
   dns.resolve4(hostname, (err, addresses) => {
     if (!err && addresses && addresses.length) {
-      callback(null, addresses[0], 4);
+      done(null, addresses[0], 4);
       return;
     }
-    dns.lookup(hostname, { family: 4 }, callback);
+    dns.lookup(hostname, { family: 4 }, done);
   });
 }
 
