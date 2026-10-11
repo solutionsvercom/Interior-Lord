@@ -1,11 +1,11 @@
 {
-  "comment": "hPanel Node.js app. After this is saved once, every push to main rebuilds and restarts the live site.",
+  "comment": "hPanel Express app. Leave Output directory blank. Entry file backend/server.js. Do not set PORT to 5000; Hostinger uses 3000.",
   "nodeVersion": "22",
   "rootDirectory": ".",
   "entryFile": "backend/server.js",
   "buildCommand": "npm run build",
   "startCommand": "npm start",
-  "outputDirectory": "backend/public",
+  "outputDirectory": "",
   "environment": [
     "NODE_ENV=production",
     "HOST=0.0.0.0",

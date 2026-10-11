@@ -1,5 +1,9 @@
 const dns = require('dns');
+const fs = require('fs');
+const path = require('path');
 const mongoose = require('mongoose');
+
+const localEnv = fs.existsSync(path.join(__dirname, '..', '.env'));
 
 const PUBLIC_DNS = ['8.8.8.8', '1.1.1.1'];
 
@@ -7,12 +11,18 @@ function isAtlasUri(uri) {
   return /^mongodb\+srv:\/\//i.test(uri);
 }
 
-function usePublicDns() {
+function forcePublicDns() {
   try {
     dns.setServers(PUBLIC_DNS);
   } catch {
     /* keep the system resolver if this process cannot change it */
   }
+}
+
+function usePublicDns() {
+  // The home router refuses Atlas SRV lookups. Hostinger's own DNS should be used first.
+  if (!localEnv) return;
+  forcePublicDns();
 }
 
 function publicLookup(hostname, options, callback) {
@@ -77,6 +87,7 @@ async function connectDB() {
       console.warn(`MongoDB connection attempt ${attempt}/3 failed`);
       console.warn(`   ${redact(err.message)}`);
       try { await mongoose.disconnect(); } catch { /* ignore */ }
+      if (!localEnv && attempt === 1) forcePublicDns();
       if (attempt < 3) {
         await new Promise((resolve) => setTimeout(resolve, 1500));
       }
