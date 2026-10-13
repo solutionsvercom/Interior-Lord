@@ -3,9 +3,8 @@ node_modules/
 backend/node_modules/
 frontend/node_modules/
 
-# frontend local/dev builds (production frontend is backend/public, created by npm run build)
+# local Vite cache; the production website in backend/public is committed for Hostinger
 frontend/dist/
-backend/public/
 .vite/
 frontend/.verify/
 frontend/.intro/

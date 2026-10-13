@@ -1,5 +1,6 @@
 console.log('Interior Lord process starting');
 
+const fs = require('fs');
 const http = require('http');
 const path = require('path');
 
@@ -45,6 +46,35 @@ process.on('uncaughtException', (err) => {
   console.error('Uncaught exception:', redact(err && err.stack ? err.stack : err));
 });
 
+function findPublicDir() {
+  const candidates = [];
+  const add = (dir) => {
+    if (dir && !candidates.includes(dir)) candidates.push(dir);
+  };
+
+  add(path.join(__dirname, 'public'));
+  add(path.resolve(process.cwd(), 'backend/public'));
+  add(path.resolve(process.cwd(), 'public'));
+
+  let dir = __dirname;
+  for (let i = 0; i < 8; i += 1) {
+    add(path.join(dir, 'public_html'));
+    add(path.join(dir, 'backend', 'public'));
+    const parent = path.dirname(dir);
+    if (parent === dir) break;
+    dir = parent;
+  }
+
+  const found = candidates.find((candidate) => fs.existsSync(path.join(candidate, 'index.html')));
+  if (found) {
+    console.log(`Serving website from ${found}`);
+    return found;
+  }
+
+  console.error(`Website build was not found. Looked in: ${candidates.join(', ')}`);
+  return path.join(__dirname, 'public');
+}
+
 function showError(err) {
   const message = redact(err && err.stack ? err.stack : err);
   console.error('Application failed to load:', message);
@@ -63,7 +93,7 @@ try {
   const contentRouter = require('./routes/content');
   const contactRouter = require('./routes/contact');
   const app = express();
-  const publicDir = path.join(__dirname, 'public');
+  const publicDir = findPublicDir();
 
   app.set('trust proxy', 1);
   app.use(corsMiddleware);
