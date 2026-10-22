@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { mediaSrc } from '../content';
 
 function fitIntroVideo(video) {
   if (!video) return;
@@ -58,11 +59,12 @@ export default function Intro({ studio, onDone }) {
       <video
         ref={videoRef}
         className="intro-video"
-        src={studio.introVideo}
-        poster={studio.introPoster || undefined}
+        src={mediaSrc(studio.introVideo, 'intro')}
+        poster={studio.introPoster ? mediaSrc(studio.introPoster, 'image') : undefined}
         autoPlay
         muted
         playsInline
+        preload="metadata"
         onEnded={onDone}
       />
       <div className="intro-bar">

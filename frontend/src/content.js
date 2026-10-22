@@ -198,8 +198,31 @@ export const fallbackStudio = {
   creditLabel: 'Noida West'
 };
 
-export function mediaSrc(file) {
+function cloudinaryKind(file, kind) {
+  if (kind === 'intro' || kind === 'video') return 'video';
+  if (kind === 'image') return 'image';
+  return /\.(mp4|mov|webm|m4v)(\?|$)/i.test(file) ? 'video' : 'image';
+}
+
+function optimizeCloudinary(file, kind) {
+  const match = String(file).match(/^(https?:\/\/res\.cloudinary\.com\/[^/]+\/(?:image|video)\/upload\/)(.*)$/i);
+  if (!match) return file;
+  const version = match[2].match(/(?:^|\/)(v\d+\/.+)$/);
+  if (!version) return file;
+  const before = match[2].slice(0, version.index);
+  const frame = before.match(/so_[^,/]+/);
+  const resolved = cloudinaryKind(file, kind);
+  const width = kind === 'intro' ? 1280 : (resolved === 'video' ? 960 : 1200);
+  const transform = resolved === 'video'
+    ? `f_auto,q_auto:eco,w_${width},c_limit`
+    : `f_auto,q_auto:eco,w_${width},c_limit`;
+  const parts = [frame && frame[0], transform].filter(Boolean).join(',');
+  return `${match[1]}${parts}/${version[1]}`;
+}
+
+export function mediaSrc(file, kind) {
   if (!file) return '';
+  if (/^https?:\/\/res\.cloudinary\.com\//i.test(file)) return optimizeCloudinary(file, kind);
   if (/^https?:\/\//i.test(file)) return file;
   return `/images/${file}`;
 }

@@ -685,12 +685,57 @@ body::before {
 	opacity: 1;
 }
 
+.show-nav {
+	position: absolute;
+	top: 50%;
+	z-index: 5;
+	transform: translateY(-50%);
+	width: 2.15rem;
+	height: 2.15rem;
+	border: 1px solid rgba(255, 255, 255, 0.72);
+	border-radius: 50%;
+	background: rgba(26, 26, 26, 0.38);
+	color: #fff;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+}
+
+.show-nav svg {
+	width: 14px;
+	height: 14px;
+	stroke: #fff;
+	fill: none;
+	stroke-width: 1.6;
+}
+
+.show-nav.prev {
+	left: 0.75rem;
+}
+
+.show-nav.next {
+	right: 0.75rem;
+}
+
+.show-nav:hover {
+	background: rgba(26, 26, 26, 0.62);
+}
+
+.show-swipe {
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	touch-action: pan-y;
+}
+
 .canvas-caption {
 	position: absolute;
 	bottom: 0;
 	left: 0;
 	right: 0;
-	z-index: 2;
+	z-index: 4;
 	padding: 2rem;
 	background: linear-gradient(to top, rgba(26, 26, 26, 0.5), transparent);
 	opacity: 0;

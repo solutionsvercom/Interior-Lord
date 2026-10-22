@@ -57,11 +57,6 @@ export default function App() {
     setSlide((current) => (current === index ? current : index));
   }
 
-  function onLeave() {
-    if (panel !== 'work' || touchRef.current) return;
-    setSlide(-1);
-  }
-
   function onSelect(event, index) {
     event.preventDefault();
     if (!touchRef.current || panel !== 'work') return;
@@ -81,7 +76,6 @@ export default function App() {
             projects={projects}
             activeIndex={activeIndex}
             onHover={onHover}
-            onLeave={onLeave}
             onSelect={onSelect}
           />
           <AboutPanel active={panel === 'about'} studio={studio} />

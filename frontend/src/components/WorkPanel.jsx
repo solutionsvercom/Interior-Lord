@@ -6,9 +6,9 @@ function ProjectArrow() {
   );
 }
 
-export default function WorkPanel({ active, studio, projects, activeIndex, onHover, onLeave, onSelect }) {
+export default function WorkPanel({ active, studio, projects, activeIndex, onHover, onSelect }) {
   return (
-    <div className={active ? 'panel panel-active' : 'panel'} id="panel-work" onMouseLeave={onLeave}>
+    <div className={active ? 'panel panel-active' : 'panel'} id="panel-work">
       <div className="panel-header">
         <span>{studio.workLabel}</span>
       </div>

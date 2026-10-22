@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { mediaSrc } from '../content';
 
 function projectShow(project) {
@@ -35,10 +35,21 @@ function MediaShow({ project, active }) {
 
   if (!current) return null;
 
+  const touchX = useRef(0);
   const label = frames.length > 1
     ? `${project.category} — ${project.year} · ${String(frame + 1).padStart(2, '0')} / ${String(frames.length).padStart(2, '0')}`
     : `${project.category} — ${project.year}`;
-  const next = () => setFrame((index) => (index + 1) % frames.length);
+  const step = (direction) => setFrame((index) => (index + direction + frameCount) % frameCount);
+
+  function onTouchStart(event) {
+    touchX.current = event.changedTouches[0].clientX;
+  }
+
+  function onTouchEnd(event) {
+    const distance = event.changedTouches[0].clientX - touchX.current;
+    if (Math.abs(distance) < 36) return;
+    step(distance < 0 ? 1 : -1);
+  }
 
   return (
     <>
@@ -46,22 +57,39 @@ function MediaShow({ project, active }) {
         <video
           key={current.src}
           className="show-frame active"
-          src={mediaSrc(current.src)}
+          src={mediaSrc(current.src, 'video')}
           autoPlay
           muted
           playsInline
-          onEnded={next}
-          onError={next}
+          preload="metadata"
+          onEnded={() => step(1)}
+          onError={() => step(1)}
         />
       ) : current.kind === 'video' ? null : (
         <img
           key={current.src}
           className="show-frame active"
-          src={mediaSrc(current.src)}
+          src={mediaSrc(current.src, 'image')}
           alt={`${project.title} ${frame + 1}`}
           loading="eager"
+          decoding="async"
         />
       )}
+      {frameCount > 1 ? (
+        <>
+          <button type="button" className="show-nav prev" aria-label="Previous" onClick={() => step(-1)}>
+            <svg viewBox="0 0 24 24"><polyline points="15 5 8 12 15 19" /></svg>
+          </button>
+          <button type="button" className="show-nav next" aria-label="Next" onClick={() => step(1)}>
+            <svg viewBox="0 0 24 24"><polyline points="9 5 16 12 9 19" /></svg>
+          </button>
+        </>
+      ) : null}
+      <div
+        className="show-swipe"
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+      />
       <div className="canvas-caption">
         <div className="canvas-caption-title">{project.title}</div>
         <div className="canvas-caption-year">{label}</div>
@@ -99,9 +127,9 @@ export default function Canvas({ studio, projects, panel, slide, contextVisible,
             {useShow ? (
               <MediaShow project={project} active={active} />
             ) : project.video && active ? (
-              <video src={project.video} poster={mediaSrc(project.image)} autoPlay muted loop playsInline />
+              <video src={mediaSrc(project.video, 'video')} poster={mediaSrc(project.image, 'image')} autoPlay muted loop playsInline preload="metadata" />
             ) : (
-              <img src={mediaSrc(project.image)} alt={project.title} loading="lazy" />
+              <img src={mediaSrc(project.image, 'image')} alt={project.title} loading="lazy" decoding="async" />
             )}
             {useShow ? null : (
               <div className="canvas-caption">
