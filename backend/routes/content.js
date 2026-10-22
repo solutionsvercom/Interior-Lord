@@ -21,6 +21,7 @@ router.get('/', async (req, res, next) => {
         category: project.category,
         year: project.year,
         image: project.image,
+        images: Array.isArray(project.images) ? project.images : [],
         video: project.video || ''
       }))
     });

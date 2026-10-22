@@ -7,6 +7,7 @@ const projectSchema = new mongoose.Schema({
   category: { type: String, required: true },
   year: { type: String, required: true },
   image: { type: String, required: true },
+  images: { type: [String], default: [] },
   video: { type: String, default: '' }
 }, { timestamps: true });
 

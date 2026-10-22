@@ -32,7 +32,14 @@ export const fallbackProjects = [
     title: 'Dressing',
     category: 'Bedroom',
     year: '2026',
-    image: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1791545736/WhatsApp_Image_2026-10-09_at_4.28.35_PM.jpg',
+    image: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677061/IMG_5747.JPG.jpg',
+    images: [
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677061/IMG_5747.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677061/IMG_5744.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677061/IMG_8936.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677062/IMG_5742.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677068/IMG_5745.JPG.jpg'
+    ],
     video: ''
   },
   {

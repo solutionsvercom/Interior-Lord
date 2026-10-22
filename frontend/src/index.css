@@ -671,11 +671,23 @@ body::before {
 	filter: none;
 }
 
+.canvas-image img.show-frame {
+	position: absolute;
+	inset: 0;
+	opacity: 0;
+	transition: opacity 0.9s ease;
+}
+
+.canvas-image img.show-frame.active {
+	opacity: 1;
+}
+
 .canvas-caption {
 	position: absolute;
 	bottom: 0;
 	left: 0;
 	right: 0;
+	z-index: 2;
 	padding: 2rem;
 	background: linear-gradient(to top, rgba(26, 26, 26, 0.5), transparent);
 	opacity: 0;
