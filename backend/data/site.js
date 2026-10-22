@@ -1,4 +1,4 @@
-const CONTENT_VERSION = 'interior-lord-5';
+const CONTENT_VERSION = 'interior-lord-6';
 
 const projects = [
   {
