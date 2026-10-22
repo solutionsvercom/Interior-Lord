@@ -61,8 +61,30 @@ export const fallbackProjects = [
     title: 'Modular Kitchen',
     category: 'Kitchen',
     year: '2026',
-    image: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1791545735/WhatsApp_Image_2026-10-09_at_4.28.34_PM_2.jpg',
-    video: 'https://res.cloudinary.com/u9nzf2zz/video/upload/v1791545749/WhatsApp_Video_2026-10-09_at_4.28.36_PM.mp4'
+    image: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792679172/IMG_4372.JPG.jpg',
+    images: [
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792679172/IMG_4372.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792679173/IMG_6256.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792679173/IMG_6512.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792679174/IMG_6255.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/f_jpg,q_auto,w_1800,c_limit/v1792679180/IMG_7877.heic'
+    ],
+    video: '',
+    show: [
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792679172/IMG_4372.JPG.jpg' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792679173/IMG_6256.JPG.jpg' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792679173/IMG_6512.JPG.jpg' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792679174/IMG_6255.JPG.jpg' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/f_jpg,q_auto,w_1800,c_limit/v1792679180/IMG_7877.heic' },
+      { kind: 'video', src: 'https://res.cloudinary.com/u9nzf2zz/video/upload/f_mp4,q_auto/v1792679186/IMG_0262.mov' },
+      { kind: 'video', src: 'https://res.cloudinary.com/u9nzf2zz/video/upload/v1792679199/IMG_8852.mp4' },
+      { kind: 'video', src: 'https://res.cloudinary.com/u9nzf2zz/video/upload/v1792679218/WhatsApp_Video_2026-10-15_at_12.08.21_PM.mp4' },
+      { kind: 'video', src: 'https://res.cloudinary.com/u9nzf2zz/video/upload/v1792679226/IMG_8883.mp4' },
+      { kind: 'video', src: 'https://res.cloudinary.com/u9nzf2zz/video/upload/f_mp4,q_auto/v1792679247/IMG_7883.mov' },
+      { kind: 'video', src: 'https://res.cloudinary.com/u9nzf2zz/video/upload/f_mp4,q_auto/v1792679245/IMG_8836.mov' },
+      { kind: 'video', src: 'https://res.cloudinary.com/u9nzf2zz/video/upload/f_mp4,q_auto/v1792679251/IMG_7879.mov' },
+      { kind: 'video', src: 'https://res.cloudinary.com/u9nzf2zz/video/upload/f_mp4,q_auto/v1792679311/IMG_7873.mov' }
+    ]
   },
   {
     order: 2,
