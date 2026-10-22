@@ -13,31 +13,89 @@ function projectShow(project) {
   return images.map((src) => ({ kind: 'image', src }));
 }
 
+function primeMedia(item) {
+  if (!item) return;
+  const url = mediaSrc(item.src, item.kind);
+  if (item.kind === 'image') {
+    const img = new Image();
+    img.decoding = 'async';
+    img.src = url;
+    return;
+  }
+  const video = document.createElement('video');
+  video.preload = 'auto';
+  video.muted = true;
+  video.playsInline = true;
+  video.src = url;
+}
+
+function ShowFrame({ item, visible, playing, onReady, onEnded }) {
+  const hidden = visible ? undefined : { opacity: 0, pointerEvents: 'none' };
+  if (item.kind === 'video') {
+    return (
+      <video
+        className="show-frame active"
+        style={hidden}
+        src={mediaSrc(item.src, 'video')}
+        autoPlay={playing}
+        muted
+        playsInline
+        preload="auto"
+        onLoadedData={onReady}
+        onError={onReady}
+        onEnded={onEnded}
+      />
+    );
+  }
+  return (
+    <img
+      className="show-frame active"
+      style={hidden}
+      src={mediaSrc(item.src, 'image')}
+      alt=""
+      decoding="async"
+      onLoad={onReady}
+      onError={onReady}
+    />
+  );
+}
+
 function MediaShow({ project, active }) {
   const frames = projectShow(project);
-  const [frame, setFrame] = useState(0);
-  const current = frames[frame] || frames[0];
   const frameCount = frames.length;
-  const currentKind = current ? current.kind : '';
-  const currentSrc = current ? current.src : '';
+  const [frame, setFrame] = useState(0);
+  const [shown, setShown] = useState(0);
+  const touchX = useRef(0);
+  const shownItem = frames[shown] || frames[0];
 
   useEffect(() => {
-    if (!active) {
-      setFrame(0);
-      return undefined;
-    }
-    if (!currentSrc || frameCount < 2 || currentKind === 'video') return undefined;
+    if (active) return undefined;
+    setFrame(0);
+    setShown(0);
+    return undefined;
+  }, [active]);
+
+  useEffect(() => {
+    if (!active || frameCount < 2) return undefined;
+    primeMedia(frames[(frame + 1) % frameCount]);
+    primeMedia(frames[(frame - 1 + frameCount) % frameCount]);
+    return undefined;
+  }, [active, frame, frameCount, project]);
+
+  const shownKind = shownItem ? shownItem.kind : '';
+
+  useEffect(() => {
+    if (!active || frame !== shown || shownKind === 'video' || frameCount < 2) return undefined;
     const timer = setTimeout(() => {
       setFrame((index) => (index + 1) % frameCount);
     }, 3800);
     return () => clearTimeout(timer);
-  }, [active, currentKind, currentSrc, frameCount]);
+  }, [active, frame, shown, shownKind, frameCount]);
 
-  if (!current) return null;
+  if (!shownItem) return null;
 
-  const touchX = useRef(0);
-  const label = frames.length > 1
-    ? `${project.category} — ${project.year} · ${String(frame + 1).padStart(2, '0')} / ${String(frames.length).padStart(2, '0')}`
+  const label = frameCount > 1
+    ? `${project.category} — ${project.year} · ${String(shown + 1).padStart(2, '0')} / ${String(frameCount).padStart(2, '0')}`
     : `${project.category} — ${project.year}`;
   const step = (direction) => setFrame((index) => (index + direction + frameCount) % frameCount);
 
@@ -53,28 +111,21 @@ function MediaShow({ project, active }) {
 
   return (
     <>
-      {current.kind === 'video' && active ? (
-        <video
-          key={current.src}
-          className="show-frame active"
-          src={mediaSrc(current.src, 'video')}
-          autoPlay
-          muted
-          playsInline
-          preload="metadata"
-          onEnded={() => step(1)}
-          onError={() => step(1)}
-        />
-      ) : current.kind === 'video' ? null : (
-        <img
-          key={current.src}
-          className="show-frame active"
-          src={mediaSrc(current.src, 'image')}
-          alt={`${project.title} ${frame + 1}`}
-          loading="eager"
-          decoding="async"
-        />
-      )}
+      {[shown, frame].filter((index, position, list) => list.indexOf(index) === position).map((index) => {
+        const item = frames[index];
+        if (!item) return null;
+        const visible = index === shown;
+        return (
+          <ShowFrame
+            key={`${item.kind}-${item.src}`}
+            item={item}
+            visible={visible}
+            playing={visible && active}
+            onReady={visible ? undefined : () => setShown(frame)}
+            onEnded={visible ? () => step(1) : undefined}
+          />
+        );
+      })}
       {frameCount > 1 ? (
         <>
           <button type="button" className="show-nav prev" aria-label="Previous" onClick={() => step(-1)}>
