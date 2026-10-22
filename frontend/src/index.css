@@ -63,7 +63,7 @@ body::before {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 1.2rem 3rem;
+	padding: 0.55rem 3rem;
 	pointer-events: none;
 	animation: fadeIn 0.5s ease backwards;
 }
@@ -74,8 +74,14 @@ body::before {
 
 .site-brand {
 	display: flex;
-	align-items: baseline;
+	align-items: center;
 	gap: 1rem;
+}
+
+.site-logo {
+	display: block;
+	height: 4.4rem;
+	width: auto;
 }
 
 .site-title-accent {
@@ -97,7 +103,7 @@ body::before {
 
 .site-divider-v {
 	width: 1px;
-	height: 14px;
+	height: 2rem;
 	background: rgba(26, 26, 26, 0.2);
 	flex-shrink: 0;
 }
@@ -209,7 +215,7 @@ body::before {
 	display: flex;
 	height: 100vh;
 	width: 100vw;
-	padding-top: 3.2rem;
+	padding-top: 5.6rem;
 	padding-bottom: 2.5rem;
 }
 
@@ -483,7 +489,52 @@ body::before {
 	font-weight: 800;
 	font-size: clamp(1.8rem, 3vw, 2.8rem);
 	line-height: 1.15;
-	margin-bottom: 2.5rem;
+	margin-bottom: 1.4rem;
+}
+
+.whatsapp-cta,
+.whatsapp-float {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	background: #25D366;
+	color: #fff;
+	text-decoration: none;
+	font-family: 'Instrument Sans', sans-serif;
+	font-weight: 600;
+	font-size: 0.72rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	border-radius: 999px;
+	transition: background 0.3s ease;
+}
+
+.whatsapp-cta svg,
+.whatsapp-float svg {
+	width: 1.05rem;
+	height: 1.05rem;
+	display: block;
+	flex-shrink: 0;
+}
+
+.whatsapp-cta:hover,
+.whatsapp-float:hover {
+	background: #1DA851;
+	color: #fff;
+}
+
+.whatsapp-cta {
+	margin-bottom: 1.6rem;
+	padding: 0.75rem 1.35rem;
+}
+
+.whatsapp-float {
+	position: fixed;
+	right: 1.5rem;
+	bottom: 3.7rem;
+	z-index: 30;
+	padding: 0.72rem 1.15rem 0.72rem 0.85rem;
+	box-shadow: 0 10px 28px rgba(26, 26, 26, 0.16);
 }
 
 .contact-form {
@@ -907,8 +958,8 @@ body::before {
 		display: inline;
 	}
 
-	.site-title {
-		font-size: 0.98rem;
+	.site-logo {
+		height: 3.15rem;
 	}
 
 	.site-header-nav {
@@ -938,7 +989,7 @@ body::before {
 		flex-direction: column;
 		height: auto;
 		min-height: 100vh;
-		padding-top: 5.35rem;
+		padding-top: 7.3rem;
 		padding-bottom: 0;
 	}
 
@@ -1011,6 +1062,16 @@ body::before {
 		text-align: center;
 	}
 
+	.whatsapp-cta {
+		width: 100%;
+		justify-content: center;
+	}
+
+	.whatsapp-float {
+		right: 0.9rem;
+		bottom: calc(0.9rem + env(safe-area-inset-bottom));
+	}
+
 	.split-divider {
 		display: none;
 	}
@@ -1018,7 +1079,7 @@ body::before {
 	.canvas-side {
 		order: -1;
 		position: sticky;
-		top: 5.05rem;
+		top: 6.95rem;
 		width: 100%;
 		height: 34vh;
 		min-height: 200px;

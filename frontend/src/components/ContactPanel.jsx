@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { sendMessage } from '../api';
+import WhatsAppButton from './WhatsAppButton';
 
 export default function ContactPanel({ active, studio }) {
   const [name, setName] = useState('');
@@ -31,6 +32,7 @@ export default function ContactPanel({ active, studio }) {
       <div className="contact-content">
         <span className="contact-label">{studio.contactLabel}</span>
         <h2 className="contact-headline">{studio.contactHeadline}</h2>
+        <WhatsAppButton studio={studio} />
         <form className="contact-form" onSubmit={onSubmit}>
           <div className="form-group">
             <label htmlFor="name">Name</label>

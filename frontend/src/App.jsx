@@ -8,6 +8,7 @@ import AboutPanel from './components/AboutPanel';
 import ContactPanel from './components/ContactPanel';
 import Canvas from './components/Canvas';
 import Intro from './components/Intro';
+import WhatsAppButton from './components/WhatsAppButton';
 
 export default function App() {
   const [studio, setStudio] = useState(fallbackStudio);
@@ -92,6 +93,7 @@ export default function App() {
         />
       </div>
       <SiteFooter studio={studio} />
+      {showIntro || panel === 'contact' ? null : <WhatsAppButton studio={studio} floating />}
     </>
   );
 }

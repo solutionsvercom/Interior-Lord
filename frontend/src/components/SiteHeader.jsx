@@ -3,8 +3,7 @@ export default function SiteHeader({ studio, panel, onNavigate }) {
     <header className="site-header">
       <div className="site-brand">
         <a className="site-title" data-nav="work" onClick={(e) => { e.preventDefault(); onNavigate('work'); }}>
-          {studio.brandMark || studio.brand}
-          {studio.brandAccent ? <span className="site-title-accent">{studio.brandAccent}</span> : null}
+          <img className="site-logo" src="/logo.jpg" alt="Interior Lord" />
         </a>
         <div className="site-divider-v"></div>
         <span className="site-tagline">{studio.tagline}</span>
