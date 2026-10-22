@@ -1,42 +1,67 @@
 import { useEffect, useState } from 'react';
 import { mediaSrc } from '../content';
 
-function projectImages(project) {
-  if (Array.isArray(project.images) && project.images.length) return project.images;
-  return project.image ? [project.image] : [];
+function projectShow(project) {
+  if (Array.isArray(project.show) && project.show.length) {
+    return project.show
+      .filter((item) => item && item.src)
+      .map((item) => ({ kind: item.kind === 'video' ? 'video' : 'image', src: item.src }));
+  }
+  const images = Array.isArray(project.images) && project.images.length
+    ? project.images
+    : (project.image ? [project.image] : []);
+  return images.map((src) => ({ kind: 'image', src }));
 }
 
-function ImageShow({ project, active }) {
-  const images = projectImages(project);
+function MediaShow({ project, active }) {
+  const frames = projectShow(project);
   const [frame, setFrame] = useState(0);
+  const current = frames[frame] || frames[0];
+  const frameCount = frames.length;
+  const currentKind = current ? current.kind : '';
+  const currentSrc = current ? current.src : '';
 
   useEffect(() => {
     if (!active) {
       setFrame(0);
       return undefined;
     }
-    if (images.length < 2) return undefined;
-    const timer = setInterval(() => {
-      setFrame((current) => (current + 1) % images.length);
+    if (!currentSrc || frameCount < 2 || currentKind === 'video') return undefined;
+    const timer = setTimeout(() => {
+      setFrame((index) => (index + 1) % frameCount);
     }, 3800);
-    return () => clearInterval(timer);
-  }, [active, images.length]);
+    return () => clearTimeout(timer);
+  }, [active, currentKind, currentSrc, frameCount]);
 
-  const label = images.length > 1
-    ? `${project.category} — ${project.year} · ${String(frame + 1).padStart(2, '0')} / ${String(images.length).padStart(2, '0')}`
+  if (!current) return null;
+
+  const label = frames.length > 1
+    ? `${project.category} — ${project.year} · ${String(frame + 1).padStart(2, '0')} / ${String(frames.length).padStart(2, '0')}`
     : `${project.category} — ${project.year}`;
+  const next = () => setFrame((index) => (index + 1) % frames.length);
 
   return (
     <>
-      {images.map((src, index) => (
-        <img
-          key={src}
-          className={index === frame ? 'show-frame active' : 'show-frame'}
-          src={mediaSrc(src)}
-          alt={`${project.title} ${index + 1}`}
-          loading={index === 0 ? 'eager' : 'lazy'}
+      {current.kind === 'video' && active ? (
+        <video
+          key={current.src}
+          className="show-frame active"
+          src={mediaSrc(current.src)}
+          autoPlay
+          muted
+          playsInline
+          onEnded={next}
+          onError={next}
         />
-      ))}
+      ) : current.kind === 'video' ? null : (
+        <img
+          key={current.src}
+          className="show-frame active"
+          src={mediaSrc(current.src)}
+          alt={`${project.title} ${frame + 1}`}
+          loading="eager"
+        />
+      )}
       <div className="canvas-caption">
         <div className="canvas-caption-title">{project.title}</div>
         <div className="canvas-caption-year">{label}</div>
@@ -62,7 +87,8 @@ export default function Canvas({ studio, projects, panel, slide, contextVisible,
 
       {projects.map((project) => {
         const active = panel === 'work' && slide === project.order;
-        const images = projectImages(project);
+        const frames = projectShow(project);
+        const useShow = frames.length > 1;
         return (
           <div
             key={project.number}
@@ -70,15 +96,14 @@ export default function Canvas({ studio, projects, panel, slide, contextVisible,
             data-slide={project.order}
             ref={(node) => { slideRefs.current[project.order] = node; }}
           >
-            {project.video && active ? (
+            {useShow ? (
+              <MediaShow project={project} active={active} />
+            ) : project.video && active ? (
               <video src={project.video} poster={mediaSrc(project.image)} autoPlay muted loop playsInline />
-            ) : null}
-            {project.video && active ? null : images.length > 1 ? (
-              <ImageShow project={project} active={active} />
             ) : (
               <img src={mediaSrc(project.image)} alt={project.title} loading="lazy" />
             )}
-            {images.length > 1 && !(project.video && active) ? null : (
+            {useShow ? null : (
               <div className="canvas-caption">
                 <div className="canvas-caption-title">{project.title}</div>
                 <div className="canvas-caption-year">{project.category} — {project.year}</div>

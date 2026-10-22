@@ -1,4 +1,4 @@
-const CONTENT_VERSION = 'interior-lord-4';
+const CONTENT_VERSION = 'interior-lord-5';
 
 const projects = [
   {
@@ -7,8 +7,55 @@ const projects = [
     title: 'False Ceiling',
     category: 'Ceiling',
     year: '2026',
-    image: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1791545737/WhatsApp_Image_2026-10-09_at_4.28.40_PM.jpg',
-    video: 'https://res.cloudinary.com/u9nzf2zz/video/upload/v1791545740/WhatsApp_Video_2026-10-09_at_4.28.34_PM.mp4'
+    image: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677519/IMG_6655.JPG.jpg',
+    images: [
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677519/IMG_6655.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677519/IMG_6654.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677520/IMG_6656.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677521/IMG_6657.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677520/IMG_6651.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677520/IMG_6659.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677521/IMG_6653.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677522/IMG_6661.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677522/IMG_6658.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677522/IMG_7780.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677522/IMG_6668.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677522/IMG_6665.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677523/IMG_7778.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677522/IMG_6660.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677523/IMG_6652.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677524/IMG_8934.JPG.jpg',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/f_jpg,q_auto,w_1800,c_limit/v1792677524/IMG_7835.heic',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/f_jpg,q_auto,w_1800,c_limit/v1792677526/IMG_7839.heic',
+      'https://res.cloudinary.com/u9nzf2zz/image/upload/f_jpg,q_auto,w_1800,c_limit/v1792677530/IMG_7848.heic'
+    ],
+    video: '',
+    show: [
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677519/IMG_6655.JPG.jpg' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677519/IMG_6654.JPG.jpg' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677520/IMG_6656.JPG.jpg' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677521/IMG_6657.JPG.jpg' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677520/IMG_6651.JPG.jpg' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677520/IMG_6659.JPG.jpg' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677521/IMG_6653.JPG.jpg' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677522/IMG_6661.JPG.jpg' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677522/IMG_6658.JPG.jpg' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677522/IMG_7780.JPG.jpg' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677522/IMG_6668.JPG.jpg' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677522/IMG_6665.JPG.jpg' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677523/IMG_7778.JPG.jpg' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677522/IMG_6660.JPG.jpg' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677523/IMG_6652.JPG.jpg' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/v1792677524/IMG_8934.JPG.jpg' },
+      { kind: 'video', src: 'https://res.cloudinary.com/u9nzf2zz/video/upload/v1792677524/IMG_8935.mp4' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/f_jpg,q_auto,w_1800,c_limit/v1792677524/IMG_7835.heic' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/f_jpg,q_auto,w_1800,c_limit/v1792677526/IMG_7839.heic' },
+      { kind: 'video', src: 'https://res.cloudinary.com/u9nzf2zz/video/upload/v1792677526/IMG_8939.mp4' },
+      { kind: 'video', src: 'https://res.cloudinary.com/u9nzf2zz/video/upload/v1792677528/IMG_8938.mp4' },
+      { kind: 'image', src: 'https://res.cloudinary.com/u9nzf2zz/image/upload/f_jpg,q_auto,w_1800,c_limit/v1792677530/IMG_7848.heic' },
+      { kind: 'video', src: 'https://res.cloudinary.com/u9nzf2zz/video/upload/v1792677533/IMG_8937.mp4' },
+      { kind: 'video', src: 'https://res.cloudinary.com/u9nzf2zz/video/upload/v1792677534/IMG_8940.mp4' }
+    ]
   },
   {
     order: 1,

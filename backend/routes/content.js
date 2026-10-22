@@ -22,7 +22,15 @@ router.get('/', async (req, res, next) => {
         year: project.year,
         image: project.image,
         images: Array.isArray(project.images) ? project.images : [],
-        video: project.video || ''
+        video: project.video || '',
+        show: Array.isArray(project.show)
+          ? project.show
+            .filter((item) => item && item.src)
+            .map((item) => ({
+              kind: item.kind === 'video' ? 'video' : 'image',
+              src: item.src
+            }))
+          : []
       }))
     });
   } catch (err) {

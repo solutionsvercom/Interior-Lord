@@ -671,14 +671,17 @@ body::before {
 	filter: none;
 }
 
-.canvas-image img.show-frame {
+.canvas-image img.show-frame,
+.canvas-image video.show-frame {
 	position: absolute;
 	inset: 0;
 	opacity: 0;
 	transition: opacity 0.9s ease;
+	object-fit: cover;
 }
 
-.canvas-image img.show-frame.active {
+.canvas-image img.show-frame.active,
+.canvas-image video.show-frame.active {
 	opacity: 1;
 }
 

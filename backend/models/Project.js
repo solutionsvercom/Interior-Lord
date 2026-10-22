@@ -8,7 +8,14 @@ const projectSchema = new mongoose.Schema({
   year: { type: String, required: true },
   image: { type: String, required: true },
   images: { type: [String], default: [] },
-  video: { type: String, default: '' }
+  video: { type: String, default: '' },
+  show: {
+    type: [{
+      kind: { type: String, default: 'image' },
+      src: { type: String, required: true }
+    }],
+    default: []
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Project', projectSchema);
