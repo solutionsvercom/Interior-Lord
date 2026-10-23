@@ -146,6 +146,36 @@ export const fallbackProjects = [
     year: '2026',
     image: 'https://res.cloudinary.com/u9nzf2zz/video/upload/so_1/v1791545815/WhatsApp_Video_2026-10-09_at_4.28.32_PM.jpg',
     video: 'https://res.cloudinary.com/u9nzf2zz/video/upload/v1791545815/WhatsApp_Video_2026-10-09_at_4.28.32_PM.mp4'
+  },
+  {
+    order: 8,
+    number: '09',
+    title: 'Floor Tile Work',
+    category: 'Tiles',
+    year: '2026',
+    image: 'floor-tile.jpg',
+    images: ['floor-tile.jpg'],
+    video: ''
+  },
+  {
+    order: 9,
+    number: '10',
+    title: 'Almira',
+    category: 'Bedroom',
+    year: '2026',
+    image: 'almira.jpg',
+    images: ['almira.jpg'],
+    video: ''
+  },
+  {
+    order: 10,
+    number: '11',
+    title: 'Bathroom Modification',
+    category: 'Bathroom',
+    year: '2026',
+    image: 'bathroom.jpg',
+    images: ['bathroom.jpg'],
+    video: ''
   }
 ];
 

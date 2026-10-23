@@ -244,7 +244,7 @@ body::before {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	padding: 1rem 0;
+	padding: 1rem 0 3.2rem;
 	opacity: 0;
 	transform: translateY(20px);
 	transition: opacity var(--transition-panel),
@@ -304,9 +304,9 @@ body::before {
 
 .project-link {
 	display: flex;
-	align-items: baseline;
+	align-items: center;
 	gap: 1.5rem;
-	padding: 1.15rem 3rem;
+	padding: 1.05rem 3rem;
 	text-decoration: none;
 	color: inherit;
 	position: relative;
@@ -337,10 +337,12 @@ body::before {
 .project-title {
 	font-family: 'Playfair Display', serif;
 	font-weight: 800;
-	font-size: clamp(1.4rem, 2.2vw, 2.1rem);
+	font-size: clamp(1.25rem, 2vw, 1.85rem);
 	text-transform: uppercase;
 	letter-spacing: 0.02em;
 	line-height: 1.1;
+	flex: 1;
+	min-width: 0;
 }
 
 .project-category {
