@@ -507,7 +507,9 @@ body::before {
 	font-size: 0.72rem;
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
+	border: none;
 	border-radius: 999px;
+	cursor: pointer;
 	transition: background 0.3s ease;
 }
 
@@ -610,6 +612,11 @@ body::before {
 
 .form-submit:hover {
 	background: var(--accent);
+}
+
+.form-submit:disabled {
+	opacity: 0.55;
+	cursor: not-allowed;
 }
 
 .contact-details {
@@ -1200,4 +1207,369 @@ body::before {
 
 .intro-sound:hover {
 	color: var(--paper);
+}
+
+#panel-contact {
+	justify-content: flex-start;
+}
+
+@media (min-width: 901px) {
+	#panel-contact {
+		padding-top: 6.2rem;
+	}
+}
+
+.intent-row {
+	display: flex;
+	gap: 0.5rem;
+}
+
+.intent-row button {
+	flex: 1;
+	background: transparent;
+	border: 1px solid rgba(26, 26, 26, 0.15);
+	color: var(--ink-light);
+	font-family: 'Instrument Sans', sans-serif;
+	font-size: 0.72rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	padding: 0.55rem 0.4rem;
+	cursor: pointer;
+}
+
+.intent-row button.intent-active {
+	background: var(--ink);
+	color: var(--paper);
+	border-color: var(--ink);
+}
+
+.form-status {
+	font-family: 'Instrument Sans', sans-serif;
+	font-size: 0.9rem;
+	line-height: 1.5;
+	color: var(--ink);
+}
+
+.form-status-error {
+	color: #8a3b32;
+}
+
+.hp {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+}
+
+.lead-dialog {
+	position: fixed;
+	inset: 0;
+	z-index: 11000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1.25rem;
+	background: rgba(26, 26, 26, 0.46);
+}
+
+.lead-card {
+	width: min(440px, 100%);
+	max-height: min(680px, calc(100vh - 2.5rem));
+	overflow: auto;
+	background: var(--paper);
+	padding: 1.4rem 1.4rem 1.3rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.85rem;
+	position: relative;
+}
+
+.lead-card h2 {
+	font-family: 'Playfair Display', serif;
+	font-weight: 800;
+	font-size: 1.7rem;
+	line-height: 1.15;
+}
+
+.lead-card .contact-label {
+	margin-bottom: 0;
+}
+
+.lead-close,
+.lead-continue,
+.crm-text {
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-family: 'DM Mono', monospace;
+	font-size: 0.62rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--ink-light);
+	padding: 0;
+}
+
+.lead-close {
+	position: absolute;
+	top: 1.15rem;
+	right: 1.2rem;
+}
+
+.lead-continue {
+	text-decoration: none;
+	color: var(--ink);
+}
+
+body.crm-body {
+	overflow: auto;
+	height: auto;
+	min-height: 100vh;
+	min-height: 100dvh;
+}
+
+.crm,
+.crm-login {
+	position: relative;
+	z-index: 1;
+}
+
+.crm {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 1.6rem 1.4rem 3rem;
+}
+
+.crm-login {
+	min-height: 100vh;
+	min-height: 100dvh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2rem 1.25rem;
+}
+
+.crm-login form,
+.crm-login .form-group {
+	width: min(420px, 100%);
+}
+
+.crm h1,
+.crm-login h1 {
+	font-family: 'Playfair Display', serif;
+	font-weight: 800;
+	font-size: clamp(2rem, 4vw, 2.8rem);
+	line-height: 1;
+	margin-bottom: 0.35rem;
+}
+
+.crm .contact-label,
+.crm-login .contact-label {
+	margin-bottom: 0.45rem;
+}
+
+.crm-intro {
+	font-family: 'Instrument Sans', sans-serif;
+	color: var(--ink-light);
+	line-height: 1.6;
+	margin-bottom: 1.2rem;
+}
+
+.crm-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	gap: 1rem;
+	flex-wrap: wrap;
+	margin-bottom: 1.3rem;
+}
+
+.crm-header-actions {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.crm-header-actions a {
+	font-family: 'DM Mono', monospace;
+	font-size: 0.62rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--ink-light);
+	text-decoration: none;
+}
+
+.crm-stats {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 0.75rem;
+	margin-bottom: 1rem;
+}
+
+.crm-stats div {
+	border: 1px solid rgba(26, 26, 26, 0.1);
+	padding: 0.8rem 0.9rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.crm-stats strong {
+	font-family: 'Playfair Display', serif;
+	font-size: 1.6rem;
+	font-weight: 800;
+	line-height: 1;
+}
+
+.crm-stats span,
+.crm-badge,
+.crm-mail,
+.crm-card time {
+	font-family: 'DM Mono', monospace;
+	font-size: 0.62rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--ink-light);
+}
+
+.crm-banner {
+	border: 1px solid rgba(166, 133, 52, 0.5);
+	padding: 0.85rem 1rem;
+	margin-bottom: 1rem;
+	font-size: 0.9rem;
+	line-height: 1.5;
+}
+
+.crm-toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.55rem;
+	margin-bottom: 1rem;
+	align-items: center;
+}
+
+.crm-toolbar input,
+.crm-toolbar select,
+.crm-card select,
+.crm-card textarea {
+	background: transparent;
+	border: none;
+	border-bottom: 1px solid rgba(26, 26, 26, 0.15);
+	padding: 0.55rem 0;
+	font-family: 'Instrument Sans', sans-serif;
+	font-size: 0.9rem;
+	color: var(--ink);
+	outline: none;
+}
+
+.crm-toolbar input {
+	flex: 1 1 200px;
+}
+
+.crm-chip {
+	background: transparent;
+	border: 1px solid rgba(26, 26, 26, 0.15);
+	color: var(--ink-light);
+	font-family: 'Instrument Sans', sans-serif;
+	font-size: 0.68rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	padding: 0.45rem 0.7rem;
+	cursor: pointer;
+}
+
+.crm-chip-active {
+	background: var(--ink);
+	color: var(--paper);
+	border-color: var(--ink);
+}
+
+.crm-list {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 0.85rem;
+}
+
+.crm-card {
+	border: 1px solid rgba(26, 26, 26, 0.12);
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.45rem;
+}
+
+.crm-card header {
+	display: flex;
+	justify-content: space-between;
+	gap: 0.75rem;
+	align-items: flex-start;
+}
+
+.crm-card time {
+	white-space: nowrap;
+	flex-shrink: 0;
+	padding-top: 0.35rem;
+}
+
+.crm-card strong {
+	font-family: 'Playfair Display', serif;
+	font-size: 1.25rem;
+}
+
+.crm-card a {
+	color: var(--ink);
+	text-decoration: none;
+	font-size: 0.9rem;
+}
+
+.crm-card a:hover,
+.crm-header-actions a:hover,
+.lead-continue:hover,
+.crm-text:hover {
+	color: var(--accent);
+}
+
+.crm-message {
+	white-space: pre-wrap;
+	color: var(--ink-light);
+	line-height: 1.5;
+	font-size: 0.9rem;
+}
+
+.crm-card label {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	font-family: 'DM Mono', monospace;
+	font-size: 0.62rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--ink-light);
+	margin-top: 0.35rem;
+}
+
+.crm-card textarea {
+	min-height: 64px;
+	resize: vertical;
+	text-transform: none;
+	letter-spacing: 0;
+	font-family: 'Instrument Sans', sans-serif;
+	font-size: 0.9rem;
+}
+
+.crm-actions {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	margin-top: 0.35rem;
+}
+
+.crm-mail-warn {
+	color: #8a3b32;
+}
+
+@media (max-width: 720px) {
+	.crm-stats {
+		grid-template-columns: repeat(2, 1fr);
+	}
 }

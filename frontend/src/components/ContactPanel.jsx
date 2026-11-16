@@ -1,26 +1,42 @@
 import { useState } from 'react';
 import { sendMessage } from '../api';
 import WhatsAppButton from './WhatsAppButton';
+import IntentField from './IntentField';
 
 export default function ContactPanel({ active, studio }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [message, setMessage] = useState('');
+  const [intent, setIntent] = useState('inquire');
+  const [company, setCompany] = useState('');
   const [status, setStatus] = useState('');
+  const [statusOk, setStatusOk] = useState(false);
   const [sending, setSending] = useState(false);
 
-  async function onSubmit(e) {
-    e.preventDefault();
+  function clearStatus(setter) {
+    return (event) => {
+      setter(event.target.value);
+      setStatus('');
+    };
+  }
+
+  async function onSubmit(event) {
+    event.preventDefault();
     if (sending) return;
     setSending(true);
     setStatus('');
     try {
-      await sendMessage({ name, email, message });
+      const data = await sendMessage({ name, email, phone, message, intent, company });
       setName('');
       setEmail('');
+      setPhone('');
       setMessage('');
-      setStatus('Message sent');
+      setIntent('inquire');
+      setStatusOk(true);
+      setStatus(data.thanks || 'Thank you. Our team will contact you soon.');
     } catch (err) {
+      setStatusOk(false);
       setStatus(err.message || 'Could not send message');
     } finally {
       setSending(false);
@@ -34,22 +50,31 @@ export default function ContactPanel({ active, studio }) {
         <h2 className="contact-headline">{studio.contactHeadline}</h2>
         <WhatsAppButton studio={studio} />
         <form className="contact-form" onSubmit={onSubmit}>
+          <IntentField value={intent} onChange={setIntent} />
           <div className="form-group">
             <label htmlFor="name">Name</label>
-            <input type="text" id="name" placeholder="Your full name" value={name} onChange={(e) => setName(e.target.value)} />
+            <input id="name" type="text" autoComplete="name" placeholder="Your full name" value={name} onChange={clearStatus(setName)} required />
           </div>
           <div className="form-group">
             <label htmlFor="email">Email</label>
-            <input type="email" id="email" placeholder="hello@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input id="email" type="email" autoComplete="email" placeholder="hello@example.com" value={email} onChange={clearStatus(setEmail)} required />
+          </div>
+          <div className="form-group">
+            <label htmlFor="phone">Phone</label>
+            <input id="phone" type="tel" autoComplete="tel" placeholder="+91 98765 43210" value={phone} onChange={clearStatus(setPhone)} />
           </div>
           <div className="form-group">
             <label htmlFor="message">Message</label>
-            <textarea id="message" placeholder="Tell us about your project..." value={message} onChange={(e) => setMessage(e.target.value)} />
+            <textarea id="message" placeholder="Tell us about your project..." value={message} onChange={clearStatus(setMessage)} required />
           </div>
-          <button type="submit" className="form-submit">
-            {sending ? 'Sending...' : 'Send Message'}
+          <div className="hp" aria-hidden="true">
+            <label htmlFor="company">Company</label>
+            <input id="company" tabIndex={-1} autoComplete="off" value={company} onChange={(event) => setCompany(event.target.value)} />
+          </div>
+          <button type="submit" className="form-submit" disabled={sending}>
+            {sending ? 'Sending...' : intent === 'register' ? 'Register' : 'Send Message'}
           </button>
-          {status ? <span className="contact-label" style={{ marginBottom: 0 }}>{status}</span> : null}
+          {status ? <p className={statusOk ? 'form-status' : 'form-status form-status-error'}>{status}</p> : null}
         </form>
         <div className="contact-details">
           <span>{studio.directLabel}</span>

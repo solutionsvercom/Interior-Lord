@@ -10,6 +10,10 @@
     "NODE_ENV=production",
     "HOST=0.0.0.0",
     "MONGODB_URI",
-    "FRONTEND_ORIGIN"
+    "FRONTEND_ORIGIN",
+    "MAIL_USER=interiorlord.official@gmail.com",
+    "MAIL_PASS",
+    "MAIL_TO=interiorlord.official@gmail.com",
+    "CRM_PASSWORD"
   ]
 }

@@ -1,4 +1,8 @@
-import { whatsappHref } from '../whatsapp';
+import { useEffect, useId, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { sendMessage } from '../api';
+import { whatsappHref, whatsappText } from '../whatsapp';
+import IntentField from './IntentField';
 
 function Icon() {
   return (
@@ -9,18 +13,128 @@ function Icon() {
 }
 
 export default function WhatsAppButton({ studio, floating = false }) {
+  const titleId = useId();
   const href = whatsappHref(studio);
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [note, setNote] = useState('');
+  const [intent, setIntent] = useState('inquire');
+  const [company, setCompany] = useState('');
+  const [status, setStatus] = useState('');
+  const [statusOk, setStatusOk] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [doneHref, setDoneHref] = useState('');
+
+  useEffect(() => {
+    if (!open) return undefined;
+    function onKey(event) {
+      if (event.key === 'Escape') setOpen(false);
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open]);
+
   if (!href) return null;
+
+  function close() {
+    if (sending) return;
+    setOpen(false);
+  }
+
+  async function onSubmit(event) {
+    event.preventDefault();
+    if (sending) return;
+    const cleanName = name.trim();
+    const cleanPhone = phone.trim();
+    if (cleanName.length < 2 || !cleanPhone) {
+      setStatusOk(false);
+      setStatus('Name and phone are required.');
+      return;
+    }
+
+    const chat = whatsappHref(studio, whatsappText({
+      name: cleanName,
+      phone: cleanPhone,
+      intent,
+      message: note
+    }));
+    const popup = window.open('about:blank', '_blank');
+    setSending(true);
+    setStatus('');
+    try {
+      const data = await sendMessage({
+        name: cleanName,
+        phone: cleanPhone,
+        message: note,
+        intent,
+        source: 'whatsapp',
+        company
+      });
+      if (popup) {
+        popup.opener = null;
+        popup.location.href = chat;
+      }
+      setName('');
+      setPhone('');
+      setNote('');
+      setDoneHref(chat);
+      setStatusOk(true);
+      setStatus(data.thanks || 'Thank you. Our team will contact you soon.');
+    } catch (err) {
+      if (popup) popup.close();
+      setStatusOk(false);
+      setStatus(err.message || 'Could not save your details');
+    } finally {
+      setSending(false);
+    }
+  }
+
+  const dialog = open ? createPortal(
+    <div className="lead-dialog" role="presentation" onClick={(event) => { if (event.target === event.currentTarget) close(); }}>
+      <form className="lead-card" role="dialog" aria-modal="true" aria-labelledby={titleId} onSubmit={onSubmit}>
+        <button type="button" className="lead-close" onClick={close}>Close</button>
+        <span className="contact-label">WhatsApp</span>
+        <h2 id={titleId}>Tell us how to reach you.</h2>
+        <IntentField value={intent} onChange={setIntent} />
+        <div className="form-group">
+          <label htmlFor={`${titleId}-name`}>Name</label>
+          <input id={`${titleId}-name`} type="text" autoComplete="name" placeholder="Your full name" value={name} onChange={(event) => setName(event.target.value)} />
+        </div>
+        <div className="form-group">
+          <label htmlFor={`${titleId}-phone`}>Phone</label>
+          <input id={`${titleId}-phone`} type="tel" autoComplete="tel" placeholder="+91 98765 43210" value={phone} onChange={(event) => setPhone(event.target.value)} />
+        </div>
+        <div className="form-group">
+          <label htmlFor={`${titleId}-note`}>Message</label>
+          <textarea id={`${titleId}-note`} placeholder="Tell us about your project..." value={note} onChange={(event) => setNote(event.target.value)} />
+        </div>
+        <div className="hp" aria-hidden="true">
+          <label htmlFor={`${titleId}-company`}>Company</label>
+          <input id={`${titleId}-company`} tabIndex={-1} autoComplete="off" value={company} onChange={(event) => setCompany(event.target.value)} />
+        </div>
+        <button type="submit" className="form-submit" disabled={sending}>
+          {sending ? 'Saving...' : 'Save and open WhatsApp'}
+        </button>
+        {status ? <p className={statusOk ? 'form-status' : 'form-status form-status-error'}>{status}</p> : null}
+        {doneHref ? <a className="lead-continue" href={doneHref} target="_blank" rel="noreferrer">Open WhatsApp</a> : null}
+      </form>
+    </div>,
+    document.body
+  ) : null;
+
   return (
-    <a
-      className={floating ? 'whatsapp-float' : 'whatsapp-cta'}
-      href={href}
-      target="_blank"
-      rel="noreferrer"
-      aria-label="Chat with Interior Lord on WhatsApp"
-    >
-      <Icon />
-      WhatsApp
-    </a>
+    <>
+      <button
+        type="button"
+        className={floating ? 'whatsapp-float' : 'whatsapp-cta'}
+        onClick={() => { setDoneHref(''); setStatus(''); setOpen(true); }}
+        aria-label="Chat with Interior Lord on WhatsApp"
+      >
+        <Icon />
+        WhatsApp
+      </button>
+      {dialog}
+    </>
   );
 }

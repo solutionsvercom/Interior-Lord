@@ -92,6 +92,8 @@ try {
   const { corsMiddleware } = require('./middleware/cors');
   const contentRouter = require('./routes/content');
   const contactRouter = require('./routes/contact');
+  const leadsRouter = require('./routes/leads');
+  const { mailReady } = require('./lib/mail');
   const app = express();
   const publicDir = findPublicDir();
 
@@ -101,14 +103,23 @@ try {
   app.use(express.urlencoded({ extended: true }));
   app.use('/api/content', contentRouter);
   app.use('/api/contact', contactRouter);
+  app.use('/api/leads', leadsRouter);
 
   app.get('/api/health', (req, res) => {
     res.json({
       status: 'ok',
       message: 'Interior Lord API is running',
-      database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+      database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+      mail: mailReady()
     });
   });
+
+  if (!mailReady()) {
+    console.warn('MAIL_PASS is not set. Inquiries are saved, and Gmail sends once an app password is added.');
+  }
+  if (!process.env.CRM_PASSWORD) {
+    console.warn('CRM_PASSWORD is not set. The lead page at /crm stays locked.');
+  }
 
   app.use(express.static(publicDir, { index: false }));
   app.use((req, res, next) => {
