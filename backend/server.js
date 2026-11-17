@@ -121,9 +121,42 @@ try {
     console.warn('CRM_PASSWORD is not set. The lead page at /crm stays locked.');
   }
 
+  function findVerificationFile(fileName) {
+    const names = [fileName, decodeURIComponent(fileName)];
+    const dirs = [
+      publicDir,
+      path.join(__dirname, 'public'),
+      path.resolve(process.cwd(), 'backend/public'),
+      path.resolve(process.cwd(), 'frontend/public'),
+      path.resolve(process.cwd()),
+      path.join(__dirname, '..'),
+      path.join(__dirname, '..', 'frontend', 'public')
+    ];
+    for (const dir of dirs) {
+      for (const name of names) {
+        const full = path.join(dir, name);
+        if (fs.existsSync(full) && fs.statSync(full).isFile()) return full;
+      }
+    }
+    return '';
+  }
+
+  // Google Search Console HTML-file verification must not fall through to the SPA.
+  app.get(/^\/google[0-9a-f]+\.html$/i, (req, res, next) => {
+    const fileName = path.basename(req.path);
+    const filePath = findVerificationFile(fileName);
+    if (!filePath) return next();
+    res.type('html');
+    res.set('Cache-Control', 'no-store');
+    res.sendFile(filePath, (err) => {
+      if (err) next(err);
+    });
+  });
+
   app.use(express.static(publicDir, { index: false }));
   app.use((req, res, next) => {
     if (req.path.startsWith('/api')) return next();
+    if (/^\/google[0-9a-f]+\.html$/i.test(req.path)) return next();
     if (req.method !== 'GET' && req.method !== 'HEAD') return next();
     res.sendFile(path.join(publicDir, 'index.html'), (err) => {
       if (err) next();
