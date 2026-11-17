@@ -121,7 +121,7 @@ try {
     console.warn('CRM_PASSWORD is not set. The lead page at /crm stays locked.');
   }
 
-  function findVerificationFile(fileName) {
+  function findPublicFile(fileName) {
     const names = [fileName, decodeURIComponent(fileName)];
     const dirs = [
       publicDir,
@@ -141,13 +141,21 @@ try {
     return '';
   }
 
-  // Google Search Console HTML-file verification must not fall through to the SPA.
-  app.get(/^\/google[0-9a-f]+\.html$/i, (req, res, next) => {
+  function isSeoAsset(pathname) {
+    return /^\/google[0-9a-f]+\.html$/i.test(pathname)
+      || pathname === '/sitemap.xml'
+      || pathname === '/robots.txt';
+  }
+
+  // Keep Search Console / SEO files out of the SPA catch-all.
+  app.get(['/sitemap.xml', '/robots.txt', /^\/google[0-9a-f]+\.html$/i], (req, res, next) => {
     const fileName = path.basename(req.path);
-    const filePath = findVerificationFile(fileName);
+    const filePath = findPublicFile(fileName);
     if (!filePath) return next();
-    res.type('html');
-    res.set('Cache-Control', 'no-store');
+    if (fileName.endsWith('.xml')) res.type('application/xml');
+    else if (fileName.endsWith('.txt')) res.type('text/plain');
+    else res.type('html');
+    res.set('Cache-Control', 'public, max-age=300');
     res.sendFile(filePath, (err) => {
       if (err) next(err);
     });
@@ -156,7 +164,7 @@ try {
   app.use(express.static(publicDir, { index: false }));
   app.use((req, res, next) => {
     if (req.path.startsWith('/api')) return next();
-    if (/^\/google[0-9a-f]+\.html$/i.test(req.path)) return next();
+    if (isSeoAsset(req.path)) return next();
     if (req.method !== 'GET' && req.method !== 'HEAD') return next();
     res.sendFile(path.join(publicDir, 'index.html'), (err) => {
       if (err) next();
