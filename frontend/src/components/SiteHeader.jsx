@@ -11,6 +11,7 @@ export default function SiteHeader({ studio, panel, onNavigate }) {
       <nav className="site-header-nav">
         <a data-nav="work" className={panel === 'work' ? 'nav-active' : undefined} onClick={(e) => { e.preventDefault(); onNavigate('work'); }}>Work</a>
         <a data-nav="about" className={panel === 'about' ? 'nav-active' : undefined} onClick={(e) => { e.preventDefault(); onNavigate('about'); }}>About</a>
+        <a href="/blog/">Blog</a>
         <a data-nav="contact" className={panel === 'contact' ? 'nav-active' : undefined} onClick={(e) => { e.preventDefault(); onNavigate('contact'); }}>Contact</a>
       </nav>
     </header>

@@ -147,24 +147,61 @@ try {
       || pathname === '/robots.txt';
   }
 
-  // Keep Search Console / SEO files out of the SPA catch-all.
-  app.get(['/sitemap.xml', '/robots.txt', /^\/google[0-9a-f]+\.html$/i], (req, res, next) => {
-    const fileName = path.basename(req.path);
-    const filePath = findPublicFile(fileName);
+  function isBlogPath(pathname) {
+    return pathname === '/blog' || pathname === '/blog/' || pathname.startsWith('/blog/');
+  }
+
+  function sendPublicFile(filePath, res, next, type) {
     if (!filePath) return next();
-    if (fileName.endsWith('.xml')) res.type('application/xml');
-    else if (fileName.endsWith('.txt')) res.type('text/plain');
-    else res.type('html');
+    if (type) res.type(type);
     res.set('Cache-Control', 'public, max-age=300');
     res.sendFile(filePath, (err) => {
       if (err) next(err);
     });
+  }
+
+  // Keep Search Console / SEO files out of the SPA catch-all.
+  app.get(['/sitemap.xml', '/robots.txt', /^\/google[0-9a-f]+\.html$/i], (req, res, next) => {
+    const fileName = path.basename(req.path);
+    const filePath = findPublicFile(fileName);
+    const type = fileName.endsWith('.xml')
+      ? 'application/xml'
+      : (fileName.endsWith('.txt') ? 'text/plain' : 'html');
+    return sendPublicFile(filePath, res, next, type);
+  });
+
+  // Static SEO blog pages (HTML files under public/blog).
+  app.get(['/blog', '/blog/'], (req, res, next) => {
+    const filePath = path.join(publicDir, 'blog', 'index.html');
+    if (!fs.existsSync(filePath)) return next();
+    return sendPublicFile(filePath, res, next, 'html');
+  });
+
+  app.get('/blog/:slug', (req, res, next) => {
+    const slug = String(req.params.slug || '').replace(/[^a-z0-9-]/gi, '');
+    if (!slug) return next();
+    const withSlash = path.join(publicDir, 'blog', slug, 'index.html');
+    if (fs.existsSync(withSlash)) {
+      if (!String(req.path).endsWith('/')) {
+        return res.redirect(301, `/blog/${slug}/`);
+      }
+      return sendPublicFile(withSlash, res, next, 'html');
+    }
+    return next();
+  });
+
+  app.get('/blog/:slug/', (req, res, next) => {
+    const slug = String(req.params.slug || '').replace(/[^a-z0-9-]/gi, '');
+    if (!slug) return next();
+    const filePath = path.join(publicDir, 'blog', slug, 'index.html');
+    if (!fs.existsSync(filePath)) return next();
+    return sendPublicFile(filePath, res, next, 'html');
   });
 
   app.use(express.static(publicDir, { index: false }));
   app.use((req, res, next) => {
     if (req.path.startsWith('/api')) return next();
-    if (isSeoAsset(req.path)) return next();
+    if (isSeoAsset(req.path) || isBlogPath(req.path)) return next();
     if (req.method !== 'GET' && req.method !== 'HEAD') return next();
     res.sendFile(path.join(publicDir, 'index.html'), (err) => {
       if (err) next();

@@ -12,6 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "interior-lord": "file:..",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

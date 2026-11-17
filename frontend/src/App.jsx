@@ -26,6 +26,14 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    const hash = String(window.location.hash || '').replace(/^#/, '');
+    if (hash === 'contact' || hash === 'panel-contact') {
+      setShowIntro(false);
+      setPanel('contact');
+    }
+  }, []);
+
+  useEffect(() => {
     let ignore = false;
     getContent()
       .then((data) => {
